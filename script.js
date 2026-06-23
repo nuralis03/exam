@@ -3404,54 +3404,7 @@ function showWrongQuestionsModal() {
     }
 }
 
-// 添加到错题本
-function addToWrongQuestions(type, question, userAnswer) {
-    // 确保当前科目存在
-    const subjectKey = (currentSubject && currentSubject.name) || '毛概';
-    
-    // 确保科目对象存在
-    if (!wrongQuestions[subjectKey]) {
-        wrongQuestions[subjectKey] = {
-            'single_choice': [],
-            'multiple_choice': [],
-            'true_false': [],
-            'fill_blank': []
-        };
-    }
-    
-    if (!wrongQuestions[subjectKey][type]) {
-        wrongQuestions[subjectKey][type] = [];
-    }
-    
-    // 检查是否已存在
-    const existingIndex = wrongQuestions[subjectKey][type].findIndex(q => q.title === question.title);
-    if (existingIndex >= 0) {
-        wrongQuestions[subjectKey][type][existingIndex].userAnswer = userAnswer;
-    } else {
-        wrongQuestions[subjectKey][type].push({
-            ...question,
-            userAnswer: userAnswer
-        });
-    }
-    
-    // 保存到本地存储（按科目存储）
-    const wrongQuestionsKey = `exam_wrong_questions_${subjectKey}`;
-    localStorage.setItem(wrongQuestionsKey, JSON.stringify(wrongQuestions[subjectKey]));
-}
-
 // 从错题本移除
-function removeFromWrongQuestions(type, question) {
-    // 确保当前科目存在
-    const subjectKey = (currentSubject && currentSubject.name) || '毛概';
-    
-    if (wrongQuestions[subjectKey] && wrongQuestions[subjectKey][type]) {
-        wrongQuestions[subjectKey][type] = wrongQuestions[subjectKey][type].filter(q => q.title !== question.title);
-        // 保存到本地存储（按科目存储）
-        const wrongQuestionsKey = `exam_wrong_questions_${subjectKey}`;
-        localStorage.setItem(wrongQuestionsKey, JSON.stringify(wrongQuestions[subjectKey]));
-    }
-}
-
 // 保存进度
 function saveProgress() {
     // 本次错题练习模式下不保存进度，避免覆盖原练习记录
@@ -3561,61 +3514,6 @@ function loadProgress(type) {
 }
 
 // 加载存储的数据
-function loadStoredData() {
-    try {
-        // 加载题库
-        const questionsJson = localStorage.getItem('exam_questions');
-        if (questionsJson) {
-            questionsData = JSON.parse(questionsJson);
-        }
-
-        // 加载收藏
-        const subjects = ['毛概', '思修', '近代史', '马原'];
-        favorites = {};
-        
-        subjects.forEach(subject => {
-            const favoritesKey = `exam_favorites_${subject}`;
-            const favoritesJson = localStorage.getItem(favoritesKey);
-            if (favoritesJson) {
-                favorites[subject] = JSON.parse(favoritesJson);
-            } else {
-                // 确保默认结构存在
-                favorites[subject] = {
-                    'single_choice': [],
-                    'multiple_choice': [],
-                    'true_false': [],
-                    'fill_blank': []
-                };
-            }
-        });
-
-        // 加载错题本
-        wrongQuestions = {};
-        
-        subjects.forEach(subject => {
-            const wrongQuestionsKey = `exam_wrong_questions_${subject}`;
-            const wrongQuestionsJson = localStorage.getItem(wrongQuestionsKey);
-            if (wrongQuestionsJson) {
-                wrongQuestions[subject] = JSON.parse(wrongQuestionsJson);
-            } else {
-                // 确保默认结构存在
-                wrongQuestions[subject] = {
-                    'single_choice': [],
-                    'multiple_choice': [],
-                    'true_false': [],
-                    'fill_blank': []
-                };
-            }
-        });
-        
-        // 加载用户统计
-        const userStatsJson = localStorage.getItem('exam_user_stats');
-        const userStats = userStatsJson ? JSON.parse(userStatsJson) : {};
-    } catch (error) {
-        console.error('加载存储数据失败:', error);
-    }
-}
-
 // 更新UI
 function updateUI() {
     // 更新题型按钮状态
@@ -4304,25 +4202,6 @@ function checkAndClearHistoryIfNeeded(subject, singleCount, multipleCount, judge
 }
 
 // 显示错题本模态框
-function showWrongQuestionsModal() {
-    if (!requireLogin('查看错题本')) {
-        return;
-    }
-    
-    const modal = document.getElementById('wrong-questions-modal');
-    modal.classList.remove('hidden');
-    renderWrongQuestions();
-    updateWrongQuestionsCount(); // 更新批量练习按钮的题目数量
-    
-    // 非会员提示
-    if (!currentUser || currentUser.membershipType === '非会员') {
-        showMessage('非会员用户的错题数据不会云端存档', 'warning');
-    }
-    
-    // 打开模态框时限制页面滚动，防止移动端滑动时出现白色区域
-    document.body.classList.add('modal-open');
-}
-
 // 隐藏错题本模态框
 function hideWrongQuestionsModal() {
     document.getElementById('wrong-questions-modal').classList.add('hidden');
@@ -4479,25 +4358,6 @@ function removeWrongQuestion(type, index) {
 }
 
 // 显示收藏模态框
-function showFavoritesModal() {
-    if (!requireLogin('查看收藏题目')) {
-        return;
-    }
-    
-    const modal = document.getElementById('favorites-modal');
-    modal.classList.remove('hidden');
-    renderFavorites();
-    updateFavoritesCount(); // 更新批量练习按钮的题目数量
-    
-    // 非会员提示
-    if (!currentUser || currentUser.membershipType === '非会员') {
-        showMessage('非会员用户的收藏数据不会云端存档', 'warning');
-    }
-    
-    // 打开模态框时限制页面滚动，防止移动端滑动时出现白色区域
-    document.body.classList.add('modal-open');
-}
-
 // 隐藏收藏模态框
 function hideFavoritesModal() {
     document.getElementById('favorites-modal').classList.add('hidden');
@@ -4819,14 +4679,6 @@ function practiceFavoritesByType() {
 }
 
 // 数组随机打乱（Fisher-Yates算法）
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
-
 // 更新错题本批量练习按钮的题目数量显示
 function updateWrongQuestionsCount() {
     const subjectKey = (currentSubject && currentSubject.name) || '毛概';

@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta name="msvalidate.01" content="8B69A0F196354E5337331F2FD11FFD89" />
+    <meta charset="UTF-8">
+    <meta name="google-site-verification" content="-DwCOSWsR4LbnxEpxXNUlTNhlCXmscIHCg5lPBWXVc0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>爱刷题 - 在线题库练习与模拟考试平台</title>
+    <meta name="description" content="爱刷题是一个在线题库练习与模拟考试平台，支持单选、多选、判断、填空、错题本、收藏题库和学习统计。">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://exam.aili.site/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="爱刷题">
+    <meta property="og:title" content="爱刷题 - 在线题库练习与模拟考试平台">
+    <meta property="og:description" content="支持在线刷题、错题本、收藏题库、学习统计与模拟考试的学习平台。">
+    <meta property="og:url" content="https://exam.aili.site/">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="爱刷题 - 在线题库练习与模拟考试平台">
+    <meta name="twitter:description" content="支持在线刷题、错题本、收藏题库、学习统计与模拟考试的学习平台。">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <!-- 邀请活动样式 -->
+    <link rel="stylesheet" href="activety/activity.css">
+    <!-- 通知样式 -->
+    <link rel="stylesheet" href="notice/notice.css">
+    <!-- 极简主题样式 -->
+    <link rel="stylesheet" href="theme/theme.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js" onerror="console.log('particles.js CDN加载失败，将使用后备方案')"></script>
+    <script src="https://unpkg.com/leancloud-storage@4.15.2/dist/av-min.js"></script>
+    <script src="js/particles-fallback.js"></script>
+    <script src="js/resource-status.js"></script>
+    <!-- 访问量统计脚本 -->
+    <script src="js/visit-stats.js"></script>
+    <!-- 极简主题脚本 -->
+    <script src="theme/theme.js"></script>
+    <script src="index.js"></script>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "爱刷题",
+            "url": "https://exam.aili.site/",
+            "inLanguage": "zh-CN",
+            "applicationCategory": "EducationalApplication",
+            "operatingSystem": "Web",
+            "description": "爱刷题是一个在线题库练习与模拟考试平台，支持单选、多选、判断、填空、错题本、收藏题库和学习统计。"
+        }
+    </script>
+</head>
+<body>
+    <noscript>
+        <div class="noscript-notice">
+            爱刷题提供在线题库练习、错题整理、收藏题库和模拟考试功能。若浏览器禁用 JavaScript，仍可通过
+            <a href="/sitemap.xml">站点地图</a>
+            了解站点入口。
+        </div>
+    </noscript>
+    <div id="particles-js"></div>
+    
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <span>爱刷题</span>
+            </div>
+            
+            <nav class="nav" id="main-nav">
+                <!-- 科目类型按钮 - 仅在首页显示 -->
+                <button id="subject-selector-btn" class="nav-btn home-only">
+                
+                    科目:
+                    <span id="current-subject-text" style="font-size: 15px;">毛概</span>
+                </button>
+                <button id="home-btn" class="nav-btn">
+                    <i class="fas fa-home"></i>
+                    返回首页
+                </button>
+                <button id="wrong-questions-btn" class="nav-btn">
+                    <i class="fas fa-times-circle"></i>
+                    错题本
+                </button>
+                <button id="favorites-btn" class="nav-btn">
+                    <i class="fas fa-star"></i>
+                    收藏题库
+                </button>
+                <!-- 个人中心按钮 - 仅在首页显示 -->
+                <button id="user-center-btn" class="nav-btn home-only">
+                    <i class="fas fa-user"></i>
+                    个人中心
+                </button>
+                
+                <!-- 考试模式导航栏 -->
+                <div id="exam-nav" class="exam-nav hidden">
+                    <div class="exam-timer">
+                        <i class="fas fa-clock"></i>
+                        <span id="timer-display">00:00</span>
+                    </div>
+                    <button id="nav-submit-exam-btn" class="nav-btn primary">
+                        <i class="fas fa-paper-plane"></i>
+                        交卷
+                    </button>
+                </div>
+                
+                <div class="status-indicator" id="connection-status">
+                    <i class="fas fa-circle"></i>
+                    <span id="status-text">初始化中...</span>
+                </div>
+            </nav>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="main">
+            <!-- 欢迎页面 -->
+            <section id="welcome-section" class="welcome-section">
+                <div class="welcome-title-row">
+                   	<button id="activity-btn" class="welcome-side-btn activity-side-btn">
+                        <i class="fas fa-gift"></i>
+                        <span>邀请抽奖</span>
+                        <small class="btn-badge">🎲 抽奖</small>
+                    </button>
+                    <h1>欢迎使用爱刷题</h1>
+                    <!-- <button id="notice-btn" class="welcome-side-btn notice-side-btn">
+                        <i class="fas fa-bullhorn"></i>
+                        <span>加入交流群</span>
+                        <small class="btn-badge">💬 免费</small>
+                    </button> -->
+                </div>
+                <p style="text-align: center; color: #f0eded; font-size: 14px; margin-top: -10px; margin-bottom: 20px; opacity: 0.8;">
+                    <i class="fas fa-hand-point-down" style="margin-right: 5px;"></i>
+                    往上滑动开始练习
+                </p>
+                <div class="welcome-content">
+                    <div class="welcome-card">
+                        <h2><i class="fas fa-user-circle"></i> 用户信息</h2>
+                        <ul>
+                            <li>
+                                <i class="fas fa-user"></i>
+                                用户名:
+                                <span id="home-username">未登录</span> 
+                            </li>
+                            <li>
+                                <i class="fas fa-crown"></i>
+                                会员类型:
+                                <span id="home-membership-type">非会员</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-calendar-alt"></i>
+                                到期时间:
+                                <span id="home-membership-expiry">--</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-database"></i>
+                                当前科目题目数:
+                                <span id="home-subject-questions">--</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="welcome-card question-types-card">
+                        <h2><i class="fas fa-list"></i> 题型支持</h2>
+                        <ul>
+                            <li>单选题：单项选择题，只有一个正确答案</li>
+                            <li>多选题：多项选择题，可能有多个正确答案</li>
+                            <li>判断题：判断对错的题目</li>
+                            <li>填空题：需要输入答案的题目</li>
+                        </ul>
+                    </div>
+                    <div class="welcome-card">
+                        <h2><i class="fas fa-tasks"></i> 智能功能</h2>
+                        <ul>
+                            <li>支持按题型练习</li>
+                            <li>自动评分和解析</li>
+                            <li>智能错题收集</li>
+                            <li>个性化学习统计</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 题型选择区 -->
+            <section id="question-type-section" class="question-type-section">
+                <div class="type-buttons">
+                    <button id="reset-records-btn" class="reset-btn" title="清除所有练习记录（保留登录状态）">
+                        <i class="fas fa-redo-alt"></i>
+                        <span>重置记录</span>
+                        <small>清除所有练习记录</small>
+                    </button>
+                    <button id="single-choice-btn" class="type-btn" data-type="single_choice" disabled>
+                        <i class="fas fa-dot-circle"></i>
+                        <span>单选题</span>
+                        <small id="single-count">-- 题</small>
+                    </button>
+                    <button id="multiple-choice-btn" class="type-btn" data-type="multiple_choice" disabled>
+                        <i class="fas fa-check-square"></i>
+                        <span>多选题</span>
+                        <small id="multiple-count">-- 题</small>
+                    </button>
+                    <button id="true-false-btn" class="type-btn" data-type="true_false" disabled>
+                        <i class="fas fa-toggle-on"></i>
+                        <span>判断题</span>
+                        <small id="judge-count">-- 题</small>
+                    </button>
+                    <button id="fill-blank-btn" class="type-btn" data-type="fill_blank" disabled>
+                        <i class="fas fa-pencil-alt"></i>
+                        <span>填空题</span>
+                        <small id="fill-count">-- 题</small>
+                    </button>
+                    <button id="mock-exam-btn" class="type-btn mock-exam" disabled>
+                        <i class="fas fa-clock"></i>
+                        <span>模拟考试</span>
+                        <small>综合测试</small>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 题目显示区 -->
+            <section id="question-section" class="question-section hidden">
+                <div class="question-container">
+                    <div class="question-header">
+                        <div class="question-info">
+                            <span id="question-number">第1题</span>
+                            <span id="question-type-label">单选题</span>
+                        </div>
+                        <div class="question-actions">
+                            <button id="analysis-btn" class="action-btn analysis-btn-desktop" title="查看答案解析" style="display: none;">
+                                <i class="fas fa-lightbulb"></i>
+                            </button>
+                            <button id="favorite-btn" class="action-btn" title="收藏题目">
+                                <i class="far fa-star"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="question-content">
+                        <div id="question-text" class="question-text"></div>
+                        <div id="options-container" class="options-container"></div>
+                        <div id="answer-input-container" class="answer-input-container hidden">
+                            <input type="text" id="answer-input" placeholder="请输入答案">
+                        </div>
+                    </div>
+                    <div class="question-footer">
+                        <button id="prev-btn" class="nav-btn">上一题</button>
+                        <button id="submit-btn" class="primary-btn">提交答案</button>
+                      
+                        <button id="next-btn" class="nav-btn">下一题</button>
+                    </div>
+                </div>
+                <div id="answer-feedback" class="answer-feedback hidden">
+                    <div class="feedback-header">
+                        <span id="feedback-result"></span>
+                    </div>
+                    <div id="correct-answer" class="correct-answer"></div>
+                    <div id="explanation" class="explanation"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 移动端底部导航栏 -->
+        <nav class="mobile-bottom-nav">
+            <button id="mobile-home-btn" class="nav-btn home-only">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </button>
+            <button id="mobile-subject-btn" class="nav-btn home-only">
+                <i class="fas fa-book"></i>
+                <span>科目</span>
+            </button>
+            <button id="mobile-wrong-btn" class="nav-btn">
+                <i class="fas fa-times-circle"></i>
+                <span>错题</span>
+            </button>
+            <button id="mobile-favorites-btn" class="nav-btn">
+                <i class="fas fa-star"></i>
+                <span>收藏</span>
+            </button>
+            <button id="mobile-user-btn" class="nav-btn home-only">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </button>
+        </nav>
+        
+        <!-- 移动端考试倒计时悬浮按钮 -->
+        <button id="mobile-exam-timer-float" class="mobile-exam-timer-float" style="display: none;">
+            <i class="fas fa-clock"></i>
+            <span id="mobile-timer-display">00:00</span>
+        </button>
+        
+        <!-- 移动端悬浮收藏按钮 -->
+        <button id="mobile-favorite-float-btn" class="mobile-favorite-float" style="display: none;">
+            <i class="far fa-star"></i>
+            <span>收藏</span>
+        </button>
+        
+        <!-- 移动端悬浮返回/交卷按钮 -->
+        <button id="mobile-home-float-btn" class="mobile-home-float" style="display: none;">
+            <i class="fas fa-home"></i>
+            <span>首页</span>
+        </button>
+        
+        <!-- 答案解析悬浮按钮 -->
+        <button id="analysis-float-btn" class="analysis-float" style="display: none;" title="查看答案解析">
+            <i class="fas fa-lightbulb"></i>
+            <span>背题</span>
+        </button>
+
+        <!-- 底部状态栏 -->
+        <footer class="footer">
+            <div class="status-bar">
+                <div id="current-progress" class="status-item">祝您学习愉快！</div>
+                
+                <!-- 资源加载状态面板 -->
+                <div id="resource-status" class="resource-status hidden">
+                    <div class="resource-item" id="mail-status">
+                        <i class="fas fa-envelope"></i>
+                        <span>邮件服务</span>
+                        <div class="status-badge loading">加载中</div>
+                    </div>
+                    <div class="resource-item" id="particles-status">
+                        <i class="fas fa-star"></i>
+                        <span>粒子背景</span>
+                        <div class="status-badge loading">加载中</div>
+                    </div>
+                    <div class="resource-item" id="leancloud-status">
+                        <i class="fas fa-cloud"></i>
+                        <span>云端数据</span>
+                        <div class="status-badge loading">加载中</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Loading 组件 -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="loading-icon">⚡</div>
+            <div class="spinner spinner-rotate"></div>
+            <div id="loading-text">正在处理...</div>
+        </div>
+    </div>
+
+    <!-- 题号选择模态框 -->
+    <div id="question-number-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>题目导航</h2>
+                <button id="close-question-number-modal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 本次练习错题快捷入口 -->
+                <div id="nav-session-wrong-section" class="nav-session-wrong-section">
+                    <button id="nav-session-wrong-btn" class="nav-session-wrong-btn">
+                        <i class="fas fa-redo"></i>
+                        <span>本次错题</span>
+                        <small id="nav-session-wrong-count">0题</small>
+                    </button>
+                </div>
+                <div id="question-numbers-container" class="question-numbers-container">
+                    <!-- 题号将在这里动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 模拟考试配置模态框 -->
+    <div id="exam-config-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content exam-modal-content">
+            <div class="modal-header">
+                <h2>模拟考试</h2>
+                <button id="close-exam-config" class="close-btn">&times;</button>
+            </div>
+            
+            <!-- 面板切换标签 -->
+            <div class="exam-tabs">
+                <button class="exam-tab active" data-tab="exam-settings">
+                    <i class="fas fa-cog"></i>
+                    <span>考试设置</span>
+                </button>
+                <button class="exam-tab" data-tab="exam-history">
+                    <i class="fas fa-history"></i>
+                    <span>考试记录</span>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- 考试设置面板 -->
+                <div id="exam-settings-panel" class="exam-panel active">
+                    <div class="config-section">
+                        <h3><i class="fas fa-cog"></i> 题目数量配置</h3>
+                        <p class="config-desc">请设置各题型的题目数量（设置为0表示不包含该题型）</p>
+                        <div class="exam-limit-tip" id="exam-limit-tip">
+                            <i class="fas fa-info-circle"></i>
+                            <span id="exam-limit-text">单次考试总题目数不得超过100道题</span>
+                        </div>
+                        
+                        <div class="config-grid">
+                            <div class="config-item">
+                                <label for="single-count-input">
+                                    <i class="fas fa-dot-circle"></i>
+                                    单选题数量
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" id="single-count-input" min="0" max="100" value="10">
+                                    <span class="available-count">可用: <span id="single-available">0</span> 题</span>
+                                </div>
+                            </div>
+                            
+                            <div class="config-item">
+                                <label for="multiple-count-input">
+                                    <i class="fas fa-check-square"></i>
+                                    多选题数量
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" id="multiple-count-input" min="0" max="100" value="5">
+                                    <span class="available-count">可用: <span id="multiple-available">0</span> 题</span>
+                                </div>
+                            </div>
+                            
+                            <div class="config-item">
+                                <label for="judge-count-input">
+                                    <i class="fas fa-toggle-on"></i>
+                                    判断题数量
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" id="judge-count-input" min="0" max="100" value="5">
+                                    <span class="available-count">可用: <span id="judge-available">0</span> 题</span>
+                                </div>
+                            </div>
+                            
+                            <div class="config-item">
+                                <label for="fill-count-input">
+                                    <i class="fas fa-pencil-alt"></i>
+                                    填空题数量
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" id="fill-count-input" min="0" max="100" value="5">
+                                    <span class="available-count">可用: <span id="fill-available">0</span> 题</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="exam-summary">
+                            <div class="summary-item">
+                                <span>总题目数：</span>
+                                <span id="total-exam-questions">25</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>预计用时：</span>
+                                <span id="estimated-time">50分钟</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 题目来源图例说明
+                        <div class="exam-source-legend">
+                            <p class="legend-title"><i class="fas fa-palette"></i> 题号颜色说明</p>
+                            <div class="legend-items">
+                                <div class="legend-item">
+                                    <span class="legend-dot source-wrong"></span>
+                                    <span>错题本</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot source-favorite"></span>
+                                    <span>收藏本</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="legend-dot source-normal"></span>
+                                    <span>题库</span>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    
+                    <div class="exam-panel-footer">
+                        <button id="cancel-exam-config" class="secondary-btn">取消</button>
+                        <button id="start-exam" class="primary-btn">开始考试</button>
+                    </div>
+                </div>
+                
+                <!-- 考试记录面板 -->
+                <div id="exam-history-panel" class="exam-panel">
+                    <div class="exam-history-header">
+                        <h3><i class="fas fa-history"></i> 考试记录</h3>
+                        <button id="clear-exam-history" class="danger-btn small">
+                            <i class="fas fa-trash"></i>
+                            清空记录
+                        </button>
+                    </div>
+                    <div id="exam-history-list" class="exam-history-list">
+                        <!-- 考试记录将在这里动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 考试题目数超限提示模态框 -->
+    <div id="exam-limit-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white;">
+                <h2><i class="fas fa-exclamation-triangle"></i> 题目数超限</h2>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center; padding: 20px 0;">
+                    <div style="font-size: 48px; color: #ef4444; margin-bottom: 16px;" id="limit-modal-icon">
+                        ⚠️
+                    </div>
+                    <h4 style="color: #1f2937; margin-bottom: 12px;" id="limit-modal-title">题目数超过限制</h4>
+                    <p style="color: #6b7280; margin-bottom: 20px; line-height: 1.6;" id="limit-modal-content">
+                        单次考试总题目数不得超过100道题。<br/>
+                        当前设置的总题目数为 <span id="current-total-questions" style="font-weight: bold; color: #ef4444;">0</span> 道题。<br/>
+                        请调整题目数量后重新开始考试。
+                    </p>
+                    <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 6px; margin-bottom: 20px;" id="limit-modal-suggestion">
+                        <p style="color: #92400e; margin: 0; font-size: 14px;">
+                            💡 建议：您可以适当减少各题型的题目数量，确保总题目数不超过100道题。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="exam-limit-ok" class="primary-btn">返回修改</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 错题本模态框 -->
+    <div id="wrong-questions-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>错题本</h2>
+                <button id="close-wrong-questions" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="wrong-questions-filter">
+                    <select id="wrong-type-filter">
+                        <option value="">全部题型</option>
+                        <option value="single_choice">单选题</option>
+                        <option value="multiple_choice">多选题</option>
+                        <option value="true_false">判断题</option>
+                        <option value="fill_blank">填空题</option>
+                    </select>
+                    <button id="clear-wrong-questions" class="danger-btn">清空错题本</button>
+                </div>
+                
+                <!-- 批量练习按钮区域 -->
+                <div class="batch-practice-section">
+                    <button id="practice-all-wrong" class="batch-practice-btn primary">
+                        <i class="fas fa-play-circle"></i>
+                        <span>全部练习</span>
+                        <small id="wrong-all-count">0题</small>
+                    </button>
+                    <button id="practice-wrong-by-type" class="batch-practice-btn">
+                        <i class="fas fa-filter"></i>
+                        <span>按题型练习</span>
+                        <small>筛选后练习</small>
+                    </button>
+                </div>
+                
+                <div id="wrong-questions-list" class="questions-list">
+                    <!-- 错题列表将在这里显示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 收藏题库模态框 -->
+    <div id="favorites-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>收藏题库</h2>
+                <button id="close-favorites" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="favorites-filter">
+                    <select id="favorite-type-filter">
+                        <option value="">全部题型</option>
+                        <option value="single_choice">单选题</option>
+                        <option value="multiple_choice">多选题</option>
+                        <option value="true_false">判断题</option>
+                        <option value="fill_blank">填空题</option>
+                    </select>
+                    <button id="clear-favorites" class="danger-btn">清空收藏</button>
+                </div>
+                
+                <!-- 批量练习按钮区域 -->
+                <div class="batch-practice-section">
+                    <button id="practice-all-favorites" class="batch-practice-btn primary">
+                        <i class="fas fa-play-circle"></i>
+                        <span>全部练习</span>
+                        <small id="favorites-all-count">0题</small>
+                    </button>
+                    <button id="practice-favorites-by-type" class="batch-practice-btn">
+                        <i class="fas fa-filter"></i>
+                        <span>按题型练习</span>
+                        <small>筛选后练习</small>
+                    </button>
+                </div>
+                
+                <div id="favorites-list" class="questions-list">
+                    <!-- 收藏题目列表将在这里显示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录注册模态框 -->
+    <div id="auth-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="auth-title">用户登录</h2>
+                <button id="close-auth" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auth-container">
+                    <!-- 登录表单 -->
+                    <div class="login-tip">
+                        <i class="fas fa-info-circle"></i>
+                        <span>如果没有注册过账号请先注册</span>
+                    </div>
+                    <form id="login-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="login-email">邮箱</label>
+                            <input type="text" id="login-email" placeholder="请输入邮箱地址" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">密码</label>
+                            <input type="password" id="login-password" placeholder="请输入密码" required>
+                        </div>
+                        <button type="submit" class="primary-btn">登录</button>
+                        <p class="auth-switch">
+                            还没有账号？ <a href="#" id="show-register">立即注册</a>
+                        </p>
+                        <p class="auth-switch" style="margin-top: -22px;">
+                            密码忘了？ <a href="#" id="show-forgot-password">忘记密码</a>
+                        </p>
+                    </form>
+
+                    <!-- 注册表单 -->
+                    <form id="register-form" class="auth-form hidden">
+                        <div class="form-group">
+                            <label for="register-email">邮箱</label>
+                            <div class="email-input-group">
+                                <input type="text" id="register-username" placeholder="请输入邮箱@前面部分" required>
+                                <span class="email-separator">@</span>
+                                <select id="email-domain" required>
+                                    <option value="">选择邮箱</option>
+                                    <option value="qq.com">qq.com</option>
+                                    <option value="163.com">163.com</option>
+                                    <option value="126.com">126.com</option>
+                                    <option value="gmail.com">gmail.com</option>
+                                  \n                                </select>
+                            </div>
+                            <input type="hidden" id="register-email">
+                        </div>
+                        <div class="form-group verification-group">
+                            <label for="verification-code">验证码</label>
+                            <div class="verification-input-group">
+                                <input type="text" id="verification-code" placeholder="请输入邮箱验证码" maxlength="6" required>
+                                <button type="button" id="send-code-btn" class="send-code-btn">发送验证码</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">密码</label>
+                            <input type="password" id="register-password" placeholder="请输入密码（至少6位）" required minlength="6">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">确认密码</label>
+                            <input type="password" id="confirm-password" placeholder="再次输入密码" required>
+                        </div>
+                        <button type="submit" class="primary-btn">注册</button>
+                        <p class="auth-switch">
+                            已有账号？ <a href="#" id="show-login">立即登录</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 忘记密码模态框 -->
+    <div id="forgot-password-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-lock"></i> 忘记密码</h2>
+                <button id="close-forgot-password" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="forgot-password-form">
+                    <div class="form-group">
+                        <label for="forgot-email">邮箱</label>
+                        <input type="email" id="forgot-email" name="forgot-email" required 
+                               placeholder="请输入注册时的邮箱地址">
+                    </div>
+                    
+                    <div class="form-group verification-group">
+                        <label for="forgot-verification-code">验证码</label>
+                        <div class="verification-input-group">
+                            <input type="text" id="forgot-verification-code" placeholder="请输入邮箱验证码" maxlength="6" required>
+                            <button type="button" id="send-reset-code-btn" class="send-code-btn">发送验证码</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="forgot-new-password">新密码</label>
+                        <input type="password" id="forgot-new-password" name="forgot-new-password" required 
+                               placeholder="请输入新密码（至少6位）" minlength="6">
+                        <small class="password-hint">密码至少6位，建议包含字母和数字</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="forgot-confirm-password">确认新密码</label>
+                        <input type="password" id="forgot-confirm-password" name="forgot-confirm-password" required 
+                               placeholder="请再次输入新密码" minlength="6">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancel-forgot-password" class="secondary-btn">取消</button>
+                        <button type="submit" id="submit-reset-password" class="primary-btn">
+                            <i class="fas fa-check"></i> 确认重置
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 个人中心模态框 -->
+    <div id="user-center-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>个人中心</h2>
+                <button id="close-user-center" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="user-center-content">
+                    <!-- 用户信息卡片 -->
+                    <div class="user-info-card">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="user-details">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <h3 id="user-display-name">未登录</h3>
+                                <button id="edit-username-btn" class="icon-btn hidden" title="修改用户名" style="font-size: 14px; padding: 4px 8px;">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                            <p id="user-name" style="color: #fff;">请先登录</p>
+                            <span id="user-membership" class="membership-badge">非会员</span>
+                        </div>
+                        <div class="user-actions">
+                            <button id="membership-btn" class="membership-btn hidden">💎 升级会员</button>
+                            <button id="change-password-btn" class="membership-btn  hidden">
+                                <i class="fas fa-key"></i> 修改密码
+                            </button>
+                            <button id="logout-btn" class="secondary-btn hidden">退出登录</button>
+                            <button id="login-register-btn" class="primary-btn">登录/注册</button>
+                        </div>
+                    </div>
+                    <!-- 主题设置 -->
+                    <div class="theme-settings">
+                        <h3><i class="fas fa-palette"></i> 主题设置</h3>
+                        <div class="theme-actions">
+                            <button id="theme-toggle-btn" class="action-btn">
+                                <i class="fas fa-adjust"></i>
+                                <span class="theme-text">极简主题</span>
+                                <small>黑白配色，无粒子背景</small>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- 数据管理 -->
+                    <div class="data-management">
+                        <h3><i class="fas fa-database"></i> 数据管理</h3>
+                        <div class="data-actions">
+                            <button id="import-data-btn" class="action-btn" disabled>
+                                <i class="fas fa-download"></i>
+                                <span>数据导入</span>
+                                <small>从云端导入学习数据</small>
+                            </button>
+                            <button id="sync-data-btn" class="action-btn" disabled>
+                                <i class="fas fa-upload"></i>
+                                <span>云同步</span>
+                                <small>同步本地数据到云端</small>
+                            </button>
+                        </div>
+                    </div>
+
+
+                    
+
+                    <!-- 学习统计 -->
+                    <div class="learning-stats">
+                        <h3><i class="fas fa-chart-bar"></i> 学习统计</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number" id="user-total-questions">0</div>
+                                <div class="stat-label">总练习题目</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="user-correct-rate">0%</div>
+                                <div class="stat-label">总正确率</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="user-favorites-count">0</div>
+                                <div class="stat-label">总收藏题目</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="user-wrong-count">0</div>
+                                <div class="stat-label">总错题数量</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改密码模态框 -->
+    <div id="change-password-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-key"></i> 修改密码</h2>
+                <button id="close-change-password" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label for="current-password">当前密码</label>
+                        <div class="password-input-group">
+                            <input type="password" id="current-password" name="current-password" required 
+                                   placeholder="请输入当前密码" autocomplete="current-password">
+                            <button type="button" class="toggle-password-btn" data-target="current-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="new-password">新密码</label>
+                        <div class="password-input-group">
+                            <input type="password" id="new-password" name="new-password" required 
+                                   placeholder="请输入新密码（至少6位）" autocomplete="new-password" minlength="6">
+                            <button type="button" class="toggle-password-btn" data-target="new-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <small class="password-hint">密码至少6位，建议包含字母和数字</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-new-password">确认新密码</label>
+                        <div class="password-input-group">
+                            <input type="password" id="confirm-new-password" name="confirm-new-password" required 
+                                   placeholder="请再次输入新密码" autocomplete="new-password" minlength="6">
+                            <button type="button" class="toggle-password-btn" data-target="confirm-new-password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="password-strength-indicator">
+                        <div class="strength-bar">
+                            <div class="strength-progress" id="password-strength-progress"></div>
+                        </div>
+                        <span class="strength-text" id="password-strength-text">密码强度：请输入密码</span>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancel-change-password" class="secondary-btn">取消</button>
+                        <button type="submit" id="submit-change-password" class="primary-btn">
+                            <i class="fas fa-save"></i> 确认修改
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改用户名模态框 -->
+    <div id="edit-username-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-user-edit"></i> 修改用户名</h2>
+                <button id="close-edit-username" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-username-form">
+                    <div class="form-group">
+                        <label for="new-username">新用户名</label>
+                        <input type="text" id="new-username" name="new-username" required 
+                               placeholder="请输入新的用户名" minlength="2" maxlength="20">
+                        <small class="password-hint">用户名长度2-20位，只能包含字母、数字、下划线和中文</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" id="cancel-edit-username" class="secondary-btn">取消</button>
+                        <button type="submit" id="submit-edit-username" class="primary-btn">
+                            <i class="fas fa-save"></i> 确认修改
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 消息提示区域 -->
+    <div id="message-area"></div>
+
+    <!-- 邀请活动弹窗 -->
+    <div id="activity-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header activity-header">
+                <h2><i class="fas fa-gift"></i> 邀请抽奖活动</h2>
+                <button id="close-activity" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- 活动导航 -->
+                <div class="activity-nav">
+                    <button id="invite-tab" class="tab-btn">
+                        <i class="fas fa-user-plus"></i> 邀请
+                    </button>
+                    <button id="lottery-tab" class="tab-btn active">
+                        <i class="fas fa-dice"></i> 抽奖
+                    </button>
+                    
+                </div>
+
+                <!-- 抽奖界面 -->
+                <div id="lottery-section" class="activity-section">
+                    <!-- 抽奖次数显示 -->
+                    <div class="lottery-info">
+                        <div class="lottery-chances">
+                            <span class="chances-label">剩余抽奖次数</span>
+                            <span class="chances-count" id="remaining-chances">1</span>
+                        </div>
+                        <div class="lottery-total">
+                            <span class="total-label">累计抽奖次数</span>
+                            <span class="total-count" id="total-chances">1</span>
+                        </div>
+                    </div>
+
+                    <!-- 抽奖转盘 -->
+                    <div class="lottery-wheel-container">
+                        <div class="lottery-display" id="lottery-display">
+                            <div class="display-text" id="display-text">-----</div>
+                        </div>
+                        <div class="wheel-border"></div>
+                    </div>
+
+                    <!-- 抽奖按钮 -->
+                    <div class="lottery-action">
+                        <button id="start-lottery-btn" class="lottery-btn">
+                            <i class="fas fa-play"></i>
+                            <span>开始抽奖</span>
+                        </button>
+                    </div>
+
+                    <!-- 抽奖记录 -->
+                    <div class="lottery-records">
+                        <h4><i class="fas fa-history"></i> 抽奖记录</h4>
+                        <div id="lottery-records-list" class="records-list">
+                            <!-- 抽奖记录将在这里显示 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 邀请界面 -->
+                <div id="invite-section" class="activity-section hidden">
+                    <!-- 新用户界面 -->
+                    <div id="new-user-section" class="invite-subsection hidden">
+                        <div class="activity-banner">
+                            <div class="banner-icon">🎁</div>
+                            <h3>欢迎新用户！</h3>
+                            <p>输入邀请码，让邀请你的老用户获得会员奖励，您也将获得一次抽奖机会</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="invitation-code-input">
+                                <i class="fas fa-key"></i> 邀请码
+                            </label>
+                            <div class="code-input-group">
+                                <input type="text" id="invitation-code-input" placeholder="请输入6位邀请码" maxlength="6">
+                                <button type="button" id="submit-invitation-btn" class="primary-btn">
+                                    <i class="fas fa-check"></i> 提交
+                                </button>
+                            </div>
+                            <small class="input-hint">请输入老用户分享给您的6位邀请码</small>
+                        </div>
+                    </div>
+
+                    <!-- 老用户界面 -->
+                    <div id="old-user-section" class="invite-subsection hidden">
+                        <div class="activity-banner old-user">
+                            <div class="banner-icon">👑</div>
+                            <h3>您的专属邀请码</h3>
+                            <p>分享给新用户，成功后双方都可获得抽奖机会</p>
+                        </div>
+                        <div class="invitation-code-display">
+                            <div class="code-label">您的邀请码</div>
+                            <div class="code-value" id="user-invitation-code">------</div>
+                            <button type="button" id="copy-code-btn" class="secondary-btn">
+                                <i class="fas fa-copy"></i> 复制邀请码
+                            </button>
+                        </div>
+                        
+                        <!-- 邀请记录 -->
+                        <div class="invited-users-list">
+                            <h4>
+                                <i class="fas fa-users"></i> 
+                                邀请记录 
+                                <span class="invited-count" id="invited-count">0</span>
+                            </h4>
+                            <div id="invited-users-container" class="users-container">
+                                <!-- 邀请记录将在这里显示 -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 活动规则 -->
+                    <div class="activity-rules">
+                        <h4><i class="fas fa-info-circle"></i> 活动说明</h4>
+                        <ul>
+                            <li>成功邀请1个新用户，邀请人和被邀请人各获得1次抽奖机会</li>
+                            <li>抽奖6次保底获得1个月会员（系统自动发放）</li>
+                            <li>会员奖励实时到账，可在个人中心查看</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 通知弹窗 -->
+    <div id="notice-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header notice-header">
+                <h2><i class="fas fa-bullhorn"></i> 重要通知</h2>
+                <button id="close-notice" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="notice-content">
+                    <div class="notice-icon">📢</div>
+                    <h3>欢迎加入学习交流群</h3>
+                    <p class="notice-description">
+                        为了更好地为您服务，我们建立了学习交流群。在群里您可以：
+                    </p>
+                   
+
+                    <div class="contact-methods-notice">
+                        <div class="contact-method-notice">
+                            <div class="contact-header-notice">
+                                <i class="fab fa-qq"></i>
+                                <div class="contact-info-notice">
+                                    <h5>QQ交流群</h5>
+                                    <span class="contact-id-notice">扫码加入</span>
+                                </div>
+                            </div>
+                            <div class="qr-code-notice">
+                                <img src="img/qun.jpg" alt="QQ群二维码" />
+                                <p>扫码加入QQ群</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="notice-footer-actions">
+                <label class="no-remind-checkbox">
+                    <input type="checkbox" id="no-remind-checkbox">
+                    <span>不再提醒</span>
+                </label>
+                <button id="confirm-notice-btn" class="primary-btn">
+                    我知道了
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入配置文件 -->
+    <script src="config/leancloud-config.js"></script>
+    
+    <!-- 引入SubjectAPI（科目管理） -->
+    <script src="js/subject-api.js"></script>
+    
+    <!-- 引入用户进度API -->
+    <script src="js/user-progress-api.js"></script>
+    
+    <!-- 引入LeanCloud客户端 -->
+    <script src="js/leancloud-client.js"></script>
+    
+    <!-- 引入邀请活动模块 -->
+    <script src="activety/activity.js"></script>
+    
+    <!-- 引入通知模块 -->
+    <script src="notice/notice.js"></script>
+    
+    <!-- 主要业务逻辑 -->
+    <script src="script.js"></script>
+
+    <!-- 考试结果模态框 -->
+    <div id="exam-result-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>考试结果</h2>
+            </div>
+            <div class="modal-body">
+                <div class="exam-result-content">
+                    <div class="score-display">
+                        <div class="score-circle">
+                            <span id="exam-score">0</span>
+                            <small>分</small>
+                        </div>
+                    </div>
+                    <div class="exam-statistics">
+                        <div class="stat-item">
+                            <span class="stat-label">总题数：</span>
+                            <span id="exam-total-questions">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">答对题数：</span>
+                            <span id="correct-questions" class="correct-text">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">答错题数：</span>
+                            <span id="wrong-questions-count" class="wrong-text">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">准确率：</span>
+                            <span id="accuracy-rate">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="justify-content: center;">
+                <button id="return-home" class="primary-btn">返回首页</button>
+                <button id="review-exam" class="secondary-btn">查看详情</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交卷确认模态框 -->
+    <div id="submit-confirm-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>确认交卷</h2>
+            </div>
+            <div class="modal-body">
+                <div class="confirm-content">
+                    <i class="fas fa-exclamation-triangle warning-icon"></i>
+                    <p>您确定要交卷吗？</p>
+                    <div class="exam-progress">
+                        <div class="progress-item">
+                            <span>已答题数：</span>
+                            <span id="answered-count">0</span>
+                        </div>
+                        <div class="progress-item">
+                            <span>未答题数：</span>
+                            <span id="unanswered-count">0</span>
+                        </div>
+                    </div>
+                    <p class="warning-text">交卷后将无法修改答案！</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancel-submit" class="secondary-btn">取消</button>
+                <button id="confirm-submit" class="primary-btn">确认交卷</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 会员弹窗 -->
+    <div id="membership-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3><i class="fas fa-crown"></i> 会员升级</h3>
+                <span class="close-btn" data-modal="membership-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- 联系官方按钮 -->
+                <div class="contact-official-section">
+                    <button id="contact-official-btn" class="contact-official-btn">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>点击此处联系官方开通会员</span>
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                </div>
+
+                <!-- 会员套餐表格 -->
+                <div class="membership-table-container">
+                    <table class="membership-table">
+                        <thead>
+                            <tr>
+                                <th>会员类型</th>
+                                <th>会员天数</th>
+                                <th>会员权益</th>
+                                <th>会员价格</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="plan-row">
+                                <td class="plan-type">
+                                    <div class="type-badge vip">🥉 VIP会员</div>
+                                    <div class="recommended-badge">极速版</div>
+                                </td>
+                                <td class="plan-days">3天<br/>1月</td>
+                                <td class="plan-benefits">
+                                    <ul>
+                                        <li>无限制做题</li>
+                                        <li>基本功能均可使用</li>
+                                        <li>模拟考试功能</li>
+                                    </ul>
+                                </td>
+                                <td class="plan-price">
+                                    <span class="price-value">¥1.99元<br/>¥9.99元</span>
+                                </td>
+                            </tr>
+                            <tr class="plan-row recommended">
+                                <td class="plan-type">
+                                    <div class="type-badge svip">🥈 SVIP会员</div>
+                                    <div class="recommended-badge">推荐版</div>
+                                </td>
+                                <td class="plan-days">3天<br/>1月</td>
+                                <td class="plan-benefits">
+                                    <ul>
+                                        <li>VIP所有功能</li>
+                                        <li>优先客服支持</li>
+                                    </ul>
+                                </td>
+                                <td class="plan-price">
+                                    <span class="price-value">¥2.49元<br/>¥10.49元</span>
+                                </td>
+                            </tr>
+                            <tr class="plan-row">
+                                <td class="plan-type">
+                                    <div class="type-badge sssvip">🥇 SSSVIP会员</div>
+                                    <div class="recommended-badge">豪华版</div>
+                                </td>
+                                <td class="plan-days">永久有效</td>
+                                <td class="plan-benefits">
+                                    <ul>
+                                        <li>所有功能终身有效</li>
+                                        <li>一对一客服支持</li>
+                                    </ul>
+                                </td>
+                                <td class="plan-price">
+                                    <span class="price-value">售罄</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- CDK激活区域 -->
+                <div class="cdk-activation-section">
+                    <h4><i class="fas fa-key"></i> CDK激活码开通</h4>
+                    <p class="cdk-note">如果您已有激活码，可以在这里快速开通会员</p>
+                    
+                    <div class="cdk-input-container">
+                        <div class="cdk-input-group">
+                            <input type="text" id="cdk-input" placeholder="请输入CDK激活码" maxlength="14">
+                            <button type="button" id="activate-cdk-btn" class="activate-btn">
+                                <i class="fas fa-magic"></i>
+                                激活
+                            </button>
+                        </div>
+                        <small class="cdk-hint">激活码通常为10-14位字符组合</small>
+                    </div>
+                </div>
+
+                <div class="contact-section">
+                    <h4><i class="fas fa-headset"></i> 联系开发人员开通会员</h4>
+                    <p class="contact-note">选择您需要的会员套餐，联系开发人员完成开通（往下滑动有联系方式二维码）</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <div class="contact-header">
+                                <i class="fab fa-qq"></i>
+                                <div class="contact-info">
+                                    <h5>QQ联系</h5>
+                                    <span class="contact-id">2932344788</span>
+                                </div>
+                            </div>
+                            <div class="qr-code">
+                                <img src="img/QQ.jpg" alt="QQ二维码" />
+                                <p>扫码添加QQ</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-method">
+                            <div class="contact-header">
+                                <i class="fab fa-weixin"></i>
+                                <div class="contact-info">
+                                    <h5>微信联系</h5>
+                                    <span class="contact-id">-aili_</span>
+                                </div>
+                            </div>
+                            <div class="qr-code">
+                                <img src="img/WeChat.jpg" alt="微信二维码" />
+                                <p>扫码添加微信</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 免费版提示弹窗 -->
+    <div id="free-version-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content free-version-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-gift"></i> 免费版客户端</h3>
+                <span class="close-btn" data-modal="free-version-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="free-version-info">
+                    <div class="free-version-icon">
+                        🎁
+                    </div>
+                    <h4>想要免费使用？</h4>
+                    <p class="main-text">
+                        如果您希望免费体验本系统，可以联系开发人员获取
+                        <span class="highlight">免费版客户端软件</span>
+                    </p>
+                    <div class="features-comparison">
+                        <div class="comparison-item">
+                            <div class="feature-label">💡 基本功能</div>
+                            <div class="feature-status available">✓ 包含</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="feature-label">📚 题库练习</div>
+                            <div class="feature-status available">✓ 支持</div>
+                        </div>
+                        <div class="comparison-item">
+                            <div class="feature-label">🚀 高级功能</div>
+                            <div class="feature-status limited">⚡ 有限制</div>
+                        </div>
+                    </div>
+                    <div class="contact-info">
+                        <p class="contact-title">联系开发人员获取：</p>
+                        <div class="contact-options">
+                            <div class="contact-option">
+                                <i class="fab fa-qq"></i>
+                                <span>QQ: 2932344788</span>
+                            </div>
+                            <div class="contact-option">
+                                <i class="fab fa-weixin"></i>
+                                <span>微信: -aili_</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="disclaimer">
+                        💡 免费版功能相对有限，但足够满足基本学习需求
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" id="free-version-consider-btn">
+                    我再考虑下
+                </button>
+                <button class="primary-btn" id="free-version-paid-btn">
+                    还是选择付费版
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录提示弹窗 -->
+    <div id="login-required-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content login-required-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-lock"></i> 需要登录</h3>
+                <span class="close-btn" data-modal="login-required-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="login-required-info">
+                    <div class="login-required-icon">
+                        🔐
+                    </div>
+                    <h4>该功能需要登录后使用</h4>
+                    <p class="main-text">
+                        您正在尝试访问的功能需要登录后才能使用，请先登录您的账户。
+                    </p>
+                    <div class="features-info">
+                        <div class="feature-item">
+                            <i class="fas fa-bookmark"></i>
+                            <span>错题本和收藏本</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-list-ul"></i>
+                            <span>分类练习</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>模拟考试</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>学习数据同步</span>
+                        </div>
+                    </div>
+                    <p class="hint-text">
+                        💡 登录后，您的学习进度、错题记录、收藏题目等数据将自动保存
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" id="login-required-cancel-btn">
+                    稍后再说
+                </button>
+                <button class="primary-btn" id="login-required-login-btn">
+                    立即登录
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 重置记录确认对话框 -->
+    <div id="reset-confirm-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content reset-confirm-content">
+            <div class="modal-header reset-confirm-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> 重置记录确认</h3>
+                <span class="close-btn" onclick="hideResetConfirmModal()">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="reset-confirm-info">
+                    <div class="warning-icon">
+                        ⚠️
+                    </div>
+                    <h4>确定要重置所有练习记录吗？</h4>
+                    <div class="reset-details">
+                        <p class="warning-text">此操作将清除以下内容：</p>
+                        <ul class="reset-list">
+                            <li><i class="fas fa-chart-line"></i> 所有答题进度</li>
+                            <li><i class="fas fa-star"></i> 收藏题目</li>
+                            <li><i class="fas fa-times-circle"></i> 错题本</li>
+                            <li><i class="fas fa-chart-bar"></i> 统计数据</li>
+                        </ul>
+                        <div class="keep-info">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>但云端记录不会被删除（仅本地）</span>
+                        </div>
+                    </div>
+                    <p class="danger-text">
+                        <i class="fas fa-exclamation-circle"></i>
+                        此操作不可撤销，请谨慎操作！
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="hideResetConfirmModal()">
+                    <i class="fas fa-times"></i> 取消
+                </button>
+                <button class="danger-btn" onclick="confirmResetRecords()">
+                    <i class="fas fa-trash-alt"></i> 确认重置
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 清空错题确认对话框 -->
+    <div id="clear-wrong-questions-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content reset-confirm-content">
+            <div class="modal-header reset-confirm-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> 清空错题本确认</h3>
+                <span class="close-btn" onclick="hideClearWrongQuestionsModal()">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="reset-confirm-info">
+                    <div class="warning-icon">
+                        ⚠️
+                    </div>
+                    <h4>确定要清空所有错题吗？</h4>
+                    <div class="reset-details">
+                        <p class="warning-text">此操作将：</p>
+                        <ul class="reset-list">
+                            <li><i class="fas fa-times-circle"></i> 删除错题本中的所有题目</li>
+                            <li><i class="fas fa-exclamation-circle"></i> 此操作不可撤销</li>
+                        </ul>
+                    </div>
+                    <p class="danger-text">
+                        <i class="fas fa-exclamation-circle"></i>
+                        清空后将无法恢复，请谨慎操作！
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="hideClearWrongQuestionsModal()">
+                    <i class="fas fa-times"></i> 取消
+                </button>
+                <button class="danger-btn" onclick="confirmClearWrongQuestions()">
+                    <i class="fas fa-trash-alt"></i> 确认清空
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 清空收藏确认对话框 -->
+    <div id="clear-favorites-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content reset-confirm-content">
+            <div class="modal-header reset-confirm-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> 清空收藏确认</h3>
+                <span class="close-btn" onclick="hideClearFavoritesModal()">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="reset-confirm-info">
+                    <div class="warning-icon">
+                        ⚠️
+                    </div>
+                    <h4>确定要清空所有收藏吗？</h4>
+                    <div class="reset-details">
+                        <p class="warning-text">此操作将：</p>
+                        <ul class="reset-list">
+                            <li><i class="fas fa-star"></i> 删除收藏夹中的所有题目</li>
+                            <li><i class="fas fa-exclamation-circle"></i> 此操作不可撤销</li>
+                        </ul>
+                    </div>
+                    <p class="danger-text">
+                        <i class="fas fa-exclamation-circle"></i>
+                        清空后将无法恢复，请谨慎操作！
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="hideClearFavoritesModal()">
+                    <i class="fas fa-times"></i> 取消
+                </button>
+                <button class="danger-btn" onclick="confirmClearFavorites()">
+                    <i class="fas fa-trash-alt"></i> 确认清空
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 清空考试记录确认对话框 -->
+    <div id="clear-exam-history-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content reset-confirm-content">
+            <div class="modal-header reset-confirm-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> 清空考试记录确认</h3>
+                <span class="close-btn" onclick="hideClearExamHistoryModal()">×</span>
+            </div>
+            <div class="modal-body">
+                <div class="reset-confirm-info">
+                    <div class="warning-icon">
+                        ⚠️
+                    </div>
+                    <h4>确定要清空所有考试记录吗？</h4>
+                    <div class="reset-details">
+                        <p class="warning-text">此操作将：</p>
+                        <ul class="reset-list">
+                            <li><i class="fas fa-history"></i> 删除当前科目的所有考试记录</li>
+                            <li><i class="fas fa-exclamation-circle"></i> 此操作不可撤销</li>
+                        </ul>
+                    </div>
+                    <p class="danger-text">
+                        <i class="fas fa-exclamation-circle"></i>
+                        清空后将无法恢复，请谨慎操作！
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn" onclick="hideClearExamHistoryModal()">
+                    <i class="fas fa-times"></i> 取消
+                </button>
+                <button class="danger-btn" onclick="confirmClearExamHistory()">
+                    <i class="fas fa-trash-alt"></i> 确认清空
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 重置成功提示对话框 -->
+    <div id="reset-success-modal" class="modal hidden" data-closeable="false">
+        <div class="modal-content reset-success-content">
+            <div class="modal-header reset-success-header">
+                <h3><i class="fas fa-check-circle"></i> 重置成功</h3>
+            </div>
+            <div class="modal-body">
+                <div class="reset-success-info">
+                    <div class="success-icon">
+                        ✅
+                    </div>
+                    <h4>记录重置成功！</h4>
+                    <p class="success-text">
+                        所有练习记录已清除，您的学习数据已重新开始。
+                    </p>
+                    <p class="refresh-text">
+                        <i class="fas fa-sync-alt"></i>
+                        页面即将自动刷新...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 科目选择模态框 -->
+    <div id="subject-selector-modal" class="modal hidden" data-required="true" data-closeable="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book"></i> 选择学习科目</h2>
+                <button id="close-subject-selector" class="close-btn hidden">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="subject-selector-content">
+                    <p class="subject-description">
+                        请选择您要学习的科目类型，系统将根据您的选择提供相应的题目。
+                    </p>
+                    <div class="subject-options">
+                        <div class="subject-option" data-subject="毛概">
+                            <div class="subject-icon">🏛️</div>
+                            <div class="subject-info">
+                                <h3>毛概</h3>
+                                <p>毛泽东思想和中国特色社会主义理论体系概论</p>
+                                <span class="subject-count" id="maogai-count">-- 题</span>
+                            </div>
+                        </div>
+                        <div class="subject-option" data-subject="思修">
+                            <div class="subject-icon">💭</div>
+                            <div class="subject-info">
+                                <h3>思修</h3>
+                                <p>思想道德修养与法律基础</p>
+                                <span class="subject-count" id="sixiu-count">-- 题</span>
+                            </div>
+                        </div>
+                        <div class="subject-option" data-subject="近代史">
+                            <div class="subject-icon">📜</div>
+                            <div class="subject-info">
+                                <h3>近代史</h3>
+                                <p>中国近现代史纲要</p>
+                                <span class="subject-count" id="jindaishi-count">-- 题</span>
+                            </div>
+                        </div>
+                        <div class="subject-option" data-subject="马原">
+                            <div class="subject-icon">⚡</div>
+                            <div class="subject-info">
+                                <h3>马原</h3>
+                                <p>马克思主义基本原理</p>
+                                <span class="subject-count" id="mayuan-count">-- 题</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="confirm-subject-selection" class="primary-btn" disabled>
+                    <i class="fas fa-check"></i> 确认选择
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 初始化模块
+        document.addEventListener('DOMContentLoaded', function() {
+            // 等待LeanCloud初始化完成后初始化功能模块
+            const checkLeanCloudReady = setInterval(() => {
+                if (window.leanCloudClient && window.leanCloudClient.isInitialized) {
+                    clearInterval(checkLeanCloudReady);
+                    
+                    // 初始化邀请活动模块
+                    if (window.invitationActivity) {
+                        window.invitationActivity.init();
+                    }
+                    
+                    // 初始化通知模块
+                    if (window.noticeManager) {
+                        window.noticeManager.init();
+                    }
+                }
+            }, 100);
+        });
+    </script>
+
+    <script>
+        // 处理会员弹窗关闭事件
+        document.addEventListener('DOMContentLoaded', function() {
+            const membershipModal = document.getElementById('membership-modal');
+            const freeVersionModal = document.getElementById('free-version-modal');
+            const membershipCloseBtn = membershipModal.querySelector('.close-btn');
+            
+            // 关闭两个弹窗的函数
+            function closeBothModals() {
+                membershipModal.classList.add('hidden');
+                freeVersionModal.classList.add('hidden');
+            }
+            
+            // 显示免费版提示的函数（每次都显示）
+            function showFreeVersionPrompt() {
+                setTimeout(() => {
+                    freeVersionModal.classList.remove('hidden');
+                }, 300); // 延迟300ms显示，让关闭动画完成
+            }
+            
+            // 监听会员弹窗关闭按钮点击
+            if (membershipCloseBtn) {
+                membershipCloseBtn.addEventListener('click', function() {
+                    membershipModal.classList.add('hidden');
+                    showFreeVersionPrompt();
+                });
+            }
+            
+            // 监听点击模态框外部关闭会员弹窗
+            membershipModal.addEventListener('click', function(e) {
+                if (e.target === membershipModal) {
+                    membershipModal.classList.add('hidden');
+                    showFreeVersionPrompt();
+                }
+            });
+            
+            // 处理免费版弹窗关闭
+            const freeVersionCloseBtn = freeVersionModal.querySelector('.close-btn');
+            if (freeVersionCloseBtn) {
+                freeVersionCloseBtn.addEventListener('click', function() {
+                    closeBothModals();
+                });
+            }
+            
+            // 监听点击免费版模态框外部关闭
+            freeVersionModal.addEventListener('click', function(e) {
+                if (e.target === freeVersionModal) {
+                    closeBothModals();
+                }
+            });
+            
+            // 处理免费版弹窗底部按钮
+            const considerBtn = document.getElementById('free-version-consider-btn');
+            const paidBtn = document.getElementById('free-version-paid-btn');
+            
+            if (considerBtn) {
+                considerBtn.addEventListener('click', function() {
+                    closeBothModals();
+                });
+            }
+            
+            if (paidBtn) {
+                paidBtn.addEventListener('click', function() {
+                    closeBothModals();
+                    // 延迟一点重新打开会员弹窗
+                    setTimeout(() => {
+                        membershipModal.classList.remove('hidden');
+                    }, 100);
+                });
+            }
+            
+            // 开发人员测试功能：手动显示免费版提示
+            window.showFreeVersionModal = function() {
+                freeVersionModal.classList.remove('hidden');
+            };
+            
+
+            
+            // 处理登录提示弹窗
+            const loginRequiredModal = document.getElementById('login-required-modal');
+            const loginRequiredCloseBtn = loginRequiredModal.querySelector('.close-btn');
+            const loginRequiredCancelBtn = document.getElementById('login-required-cancel-btn');
+            const loginRequiredLoginBtn = document.getElementById('login-required-login-btn');
+            
+            // 关闭登录提示弹窗
+            function closeLoginRequiredModal() {
+                loginRequiredModal.classList.add('hidden');
+            }
+            
+            // 显示登录提示弹窗
+            window.showLoginRequiredModal = function() {
+                loginRequiredModal.classList.remove('hidden');
+            };
+            
+            // 绑定登录提示弹窗的关闭事件
+            if (loginRequiredCloseBtn) {
+                loginRequiredCloseBtn.addEventListener('click', closeLoginRequiredModal);
+            }
+            
+            if (loginRequiredCancelBtn) {
+                loginRequiredCancelBtn.addEventListener('click', closeLoginRequiredModal);
+            }
+            
+            // 点击外部关闭登录提示弹窗
+            loginRequiredModal.addEventListener('click', function(e) {
+                if (e.target === loginRequiredModal) {
+                    closeLoginRequiredModal();
+                }
+            });
+            
+            // 立即登录按钮
+            if (loginRequiredLoginBtn) {
+                loginRequiredLoginBtn.addEventListener('click', function() {
+                    closeLoginRequiredModal();
+                    // 打开登录注册弹窗
+                    document.getElementById('auth-modal').classList.remove('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+ 
+</html>
